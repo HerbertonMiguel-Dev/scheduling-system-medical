@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AgendamentoStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELED
+  NO_SHOW
+}
+
+model Convenio{
+  id              String            @id @default(uuid())
+  nome String?
+
+  medicos     Medico[]
+  agendamentos Agendamento[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Disponibilidade {
+  id              String            @id @default(uuid())
+  timeZone String?
+  times              String[]  @default([])
+
+  
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Especialidade {
+  id              String            @id @default(uuid())
+  nome String?
+
+  medicos Medico[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Agendamento {
+  id              String            @id @default(uuid())
+  nome            String // Nome do pacient
+  email           String
+  telefone        String
+  agendamentoDate DateTime
+  time            String
+  status          AgendamentoStatus @default(SCHEDULED)
+
+
+  medicoId String?
+  medico   Medico? @relation(fields: [medicoId], references: [id])
+
+  convenioId String?
+  convenio   Convenio? @relation(fields: [convenioId], references: [id])
+
+  servicoId String
+  servico   Servico @relation(fields: [servicoId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+}
+
+model Medico {
+  id              String            @id @default(uuid())
+  nome String?
+
+  availableTimes Json    @default("{}")
+
+  convenios   Convenio[]
+  agendamentos    Agendamento[]
+
+  especialidadeId String
+  especialidade   Especialidade @relation(fields: [especialidadeId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Servico {
+  id              String            @id @default(uuid())
+  nome String?
+  duracao Int
+
+  agendamentos Agendamento[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
