@@ -23,7 +23,7 @@ enum AgendamentoStatus {
 
 model Convenio{
   id              String            @id @default(uuid())
-  nome String?
+  nome String
 
   medicos     Medico[]
   agendamentos Agendamento[]
@@ -45,7 +45,7 @@ model Disponibilidade {
 
 model Especialidade {
   id              String            @id @default(uuid())
-  nome String?
+  nome String 
 
   medicos Medico[]
 
@@ -79,7 +79,7 @@ model Agendamento {
 
 model Medico {
   id              String            @id @default(uuid())
-  nome String?
+  nome String 
 
   availableTimes Json    @default("{}")
 
