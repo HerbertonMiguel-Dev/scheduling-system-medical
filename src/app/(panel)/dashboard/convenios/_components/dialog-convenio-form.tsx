@@ -1,3 +1,5 @@
+// src/app/(panel)/dashboard/convenios/_components/dialog-convenio-form.tsx
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'

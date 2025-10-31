@@ -1,3 +1,5 @@
+// src/app/(panel)/dashboard/convenios/_components/hooks/convenios-content.tsx
+
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
