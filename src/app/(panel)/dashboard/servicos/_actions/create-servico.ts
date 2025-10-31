@@ -1,4 +1,4 @@
-//src/app/(panel)/servicos/_actions/create-servico.ts
+//src/app/(panel)/dashboard/servicos/_actions/create-servico.ts
 "use server"
 
 import prisma from '@/lib/prisma'
