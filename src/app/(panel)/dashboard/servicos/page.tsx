@@ -2,7 +2,7 @@
 
 import { ServicosContent } from "./_components/servicos-content";
 
-export default async function ServicosPage() { 
+export default async function Servicos() { 
   return (
     <section>
      
