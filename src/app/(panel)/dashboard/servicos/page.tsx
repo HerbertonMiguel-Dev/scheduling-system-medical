@@ -1,8 +1,13 @@
+// src/app/(panel)/servicos/page.tsx
 
-export default function Servicos() {
+import { ServicosContent } from "./_components/servicos-content";
+
+export default async function ServicosPage() { 
   return (
     <section>
-      <h1>Página Serviços</h1>
+     
+     
+      <ServicosContent />
     </section>
   )
 }
