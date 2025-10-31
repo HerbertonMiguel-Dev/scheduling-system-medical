@@ -7,9 +7,9 @@ services:
     restart: always
     environment:
       # Variáveis de ambiente padrão do PostgreSQL
-      POSTGRES_USER: your_db_user      # <-- MUDAR! Usuário do banco de dados
-      POSTGRES_PASSWORD: your_db_password # <-- MUDAR! Senha do banco de dados
-      POSTGRES_DB: agendamento_db       # Nome do banco de dados
+      POSTGRES_USER: postgres      # <-- MUDAR! Usuário do banco de dados
+      POSTGRES_PASSWORD: admin # <-- MUDAR! Senha do banco de dados
+      POSTGRES_DB: scheduling-system-medical       # Nome do banco de dados
 
     ports:
       # Mapeia a porta 5432 do container para a porta 5432 da sua máquina

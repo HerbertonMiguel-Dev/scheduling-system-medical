@@ -1,4 +1,4 @@
-//src/app/(panel)/servicos/_actions/delete-servico.ts
+//src/app/(panel)/dashboard/servicos/_actions/delete-servico.ts
 
 "use server"
 

@@ -13,13 +13,23 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
+    
+    // NOVO: Define a raiz para a resolução de caminhos
+    "baseUrl": ".", 
+    
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      // MAPEAMENTO EXISTENTE
+      "@/*": ["./src/*"],
+      
+      // NOVO MAPEAMENTO CRÍTICO para a saída customizada do Prisma Client
+      "@prisma/client": [
+        "./src/generated/prisma/index.d.ts"
+      ]
     }
   },
   "include": [
