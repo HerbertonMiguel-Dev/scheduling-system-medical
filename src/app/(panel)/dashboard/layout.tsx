@@ -2,6 +2,7 @@
 
 import { SidebarDashboard } from "./_components/sidebar";
 import { Toaster } from "sonner"; // import do Toaster
+import { QueryClientContext } from '@/providers/queryclient'
 
 export default function DashboardLayout({
   children,
@@ -10,12 +11,15 @@ export default function DashboardLayout({
 }) {
   return (
     <>
-      <SidebarDashboard>
-        {children}
-      </SidebarDashboard>
-      
-      
-      <Toaster />
+      <QueryClientContext>
+        <SidebarDashboard>
+          <Toaster
+            duration={2500}
+          />
+          {children}
+        </SidebarDashboard>
+      </QueryClientContext>
+
     </>
   );
 }
