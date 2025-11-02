@@ -4,48 +4,29 @@
 
 import prisma from '@/lib/prisma'
 import { z } from 'zod'
-import { revalidatePath } from 'next/cache'
 
 const formSchema = z.object({
-  servicoId: z.string().min(1, "O id do serviço é obrigatório para exclusão"),
+  servicoId: z.string().min(1, "O id do serviço é obrigatório"),
 })
 
-type FromSchema = z.infer<typeof formSchema>
+type FormSchema = z.infer<typeof formSchema>
 
-export async function deleteServico(formData: FromSchema) {
-  const schema = formSchema.safeParse(formData);
+export async function deleteServico(formData: FormSchema) {
+  const parsed = formSchema.safeParse(formData)
 
-  if (!schema.success) {
-    return {
-      error: schema.error.issues[0].message
-    }
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0].message }
   }
 
   try {
+    // Aqui não tem `status` no seu model, então vamos deletar de fato
     await prisma.servico.delete({
-      where: {
-        id: formData.servicoId,
-      },
+      where: { id: formData.servicoId }
     })
 
-    // Limpa o cache para que a página de serviços mostre a alteração
-    revalidatePath("/dashboard/servicos")
-
-    return {
-      data: "Serviço deletado com sucesso"
-    }
-
+    return { data: "Serviço deletado com sucesso" }
   } catch (err) {
-    // Trata erro de integridade (Foreign Key) se o serviço estiver sendo usado em um agendamento
-    if (err instanceof Error && 'code' in err && err.code === 'P2003') {
-      return {
-        error: "Falha ao deletar: O serviço está associado a um ou mais agendamentos.",
-      }
-    }
-
-    console.error(err);
-    return {
-      error: "Falha ao deletar serviço",
-    }
+    console.log(err)
+    return { error: "Falha ao deletar serviço" }
   }
 }
