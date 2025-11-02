@@ -1,3 +1,5 @@
+// src/app/(panel)/dashboard/medicos/_components/dialog-medico.tsx
+
 "use client"
 import { useTransition } from "react"
 import { useRouter } from "next/navigation"
@@ -68,7 +70,6 @@ export function DialogMedico({ closeModal, initialValues, medicoId, especialidad
             )}
           />
 
-          {/* Especialidade */}
           {/* Especialidade */}
           <FormField
             control={form.control}
