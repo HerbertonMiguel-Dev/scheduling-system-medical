@@ -81,9 +81,9 @@ export function DisponibilidadeContent({ disponibilidade }: DisponibilidadeConte
     console.log("disponibilidade.id:", disponibilidade.id);
 
     const response = await updateDisponibilidade({
-      
+      id: disponibilidade.id || "1",
       timeZone: values.timeZone,
-      times: selectedHours
+      times: selectedHours,
     })
 
     if (response.error) {
