@@ -1,5 +1,8 @@
+// src/app/(public)/_components/header.tsx
+
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link"
 import doctorImg from '../../../../public/doctor-hero.png'
 
 export function Hero() {
@@ -17,9 +20,11 @@ export function Hero() {
             do câncer e na produção de conhecimento, ensino e formação profissional.
             </p>
 
-            <Button className="bg-emerald-500 hover:bg-emerald-400 w-fit px-6 font-semibold">
-              Faça seu agendamento
-            </Button>
+            <Link href="/clinica">
+              <Button className="bg-emerald-500 hover:bg-emerald-400 w-fit px-6 font-semibold">
+                Faça seu agendamento
+              </Button>
+            </Link>
           </article>
 
 
