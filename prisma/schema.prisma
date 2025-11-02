@@ -36,9 +36,7 @@ model Disponibilidade {
   id              String            @id @default(uuid())
   timeZone String?
   times              String[]  @default([])
-
   
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
