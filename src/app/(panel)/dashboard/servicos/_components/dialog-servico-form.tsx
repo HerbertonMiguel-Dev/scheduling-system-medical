@@ -1,14 +1,13 @@
-//src/app/(panel)/servicos/_components/dialog-servico-form.tsx
+//src/app/(panel)/dashboard/servicos/_components/dialog-servico-form.tsx
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 
-// Esquema de validação focado apenas em nome e duração (horas/minutos)
 const formSchema = z.object({
   nome: z.string().min(1, { message: "O nome do serviço é obrigatório" }),
-  hours: z.string(), // Input de horas como string
-  minutes: z.string(), // Input de minutos como string
+  hours: z.string(),
+  minutes: z.string(),
 })
 
 export interface UseDialogServicoFormProps {
@@ -26,8 +25,8 @@ export function useDialogServicoForm({ initialValues }: UseDialogServicoFormProp
     resolver: zodResolver(formSchema),
     defaultValues: initialValues || {
       nome: "",
-      hours: "0",
-      minutes: "0",
+      hours: "",
+      minutes: "",
     }
   })
 }
