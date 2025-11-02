@@ -1,13 +1,12 @@
 // src/app/(panel)/dashboard/disponibilidades/_actions/update-disponibilidade.ts
-
 "use server"
 
 import prisma from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { z } from "zod"
 
-// Validação dos campos relevantes
 const formSchema = z.object({
+  id: z.string().optional(),
   timeZone: z.string().optional(),
   times: z.array(z.string()).default([]),
 })
@@ -18,28 +17,29 @@ export async function updateDisponibilidade(formData: FormSchema) {
   const schema = formSchema.safeParse(formData)
 
   if (!schema.success) {
-    return {
-      error: "Dados inválidos. Verifique os campos e tente novamente.",
-    }
+    return { error: "Dados inválidos. Verifique os campos e tente novamente." }
   }
 
-  const { timeZone, times } = schema.data
+  const { id, timeZone, times } = schema.data
 
   try {
-    // Atualiza todas as disponibilidades (ou a única existente)
-    await prisma.disponibilidade.updateMany({
-      data: {
+    // Usa upsert para criar se não existir
+    await prisma.disponibilidade.upsert({
+      where: { id: id || "1" }, // se não houver ID, usa "1"
+      update: {
+        timeZone,
+        times,
+      },
+      create: {
+        id: id || "1",
         timeZone,
         times,
       },
     })
 
-    // Revalida o cache da rota do dashboard
     revalidatePath("/dashboard/disponibilidades")
 
-    return {
-      data: "Disponibilidade atualizada com sucesso!",
-    }
+    return { data: "Disponibilidade atualizada com sucesso!" }
   } catch (err) {
     console.error("Erro ao atualizar disponibilidade:", err)
     return {
