@@ -1,4 +1,5 @@
-"use client" // necessário para Client Components e Sonner
+// src/app/(panel)/dashboard/layout.tsx
+"use client" 
 
 import { SidebarDashboard } from "./_components/sidebar";
 import { Toaster } from "sonner"; // import do Toaster
