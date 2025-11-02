@@ -1,3 +1,5 @@
+// src/app/(public)/_components/header.tsx
+
 "use client"
 
 import { useState } from 'react'
@@ -21,7 +23,7 @@ export function Header() {
   const session = null;
 
   const navItems = [
-    { href: "#profissionais", label: "Profissionais" },
+    { href: "#acessar", label: "Acessar" },
   ]
 
   const NavLinks = () => (
@@ -47,10 +49,13 @@ export function Header() {
           Acessar clinica
         </Link>
       ) : (
-        <Button>
-          <LogIn />
-          Portal da clinica
-        </Button>
+        <Link href="/dashboard">
+          <Button>
+            <LogIn />
+            Portal da liga
+          </Button>
+        </Link>
+
       )}
     </>
   )
@@ -66,14 +71,14 @@ export function Header() {
           href="/"
         >
           <Image
-              src={logoLiga}
-              alt="Foto ilustrativa de um profissional de saude"
-              width={170}
-              height={200}
-              className="object-contain"
-              quality={100}
-              priority
-            />
+            src={logoLiga}
+            alt="Foto ilustrativa de um profissional de saude"
+            width={170}
+            height={200}
+            className="object-contain"
+            quality={100}
+            priority
+          />
         </Link>
 
         <nav className="hidden md:flex items-center space-x-4">
