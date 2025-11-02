@@ -10,6 +10,7 @@ const formSchema = z.object({
   id: z.string().uuid({ message: "ID inválido" }),
   nome: z.string().min(3, { message: "O nome deve ter no mínimo 3 caracteres." }),
   especialidadeId: z.string().min(1, { message: "A especialidade é obrigatória." }),
+  convenioId: z.string().optional(), // ✅ convênio opcional
   availableTimes: z.record(z.string(), z.array(z.string())).optional(),
 });
 
@@ -24,7 +25,7 @@ export async function updateMedico(formData: FormSchema) {
     };
   }
 
-  const { id, nome, especialidadeId, availableTimes } = schema.data;
+  const { id, nome, especialidadeId, convenioId, availableTimes } = schema.data;
 
   try {
     const updatedMedico = await prisma.medico.update({
@@ -32,13 +33,21 @@ export async function updateMedico(formData: FormSchema) {
       data: {
         nome,
         especialidadeId,
-        availableTimes: availableTimes || [],
+        availableTimes: availableTimes || {},
+
+        // ✅ Atualiza o convênio vinculado
+        convenios: {
+          set: [], // remove todos os vínculos antigos
+          ...(convenioId ? { connect: [{ id: convenioId }] } : {}), // adiciona o novo se existir
+        },
+      },
+      include: {
+        especialidade: true,
+        convenios: true,
       },
     });
 
-    return {
-      data: updatedMedico,
-    };
+    return { data: updatedMedico };
   } catch (err) {
     console.error("Erro ao atualizar médico:", err);
     return {
