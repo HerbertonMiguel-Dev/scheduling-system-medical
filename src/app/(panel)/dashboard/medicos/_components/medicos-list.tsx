@@ -1,3 +1,5 @@
+// src/app/(panel)/dashboard/medicos/_components/medicos-list.tsx
+
 "use client";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -179,11 +181,11 @@ export function MedicosList({ medicos, especialidades, convenios }: MedicosListP
             initialValues={
               selectedMedico
                 ? {
-                    nome: selectedMedico.nome,
-                    especialidadeId: selectedMedico.especialidadeId,
-                    convenioId: "",
-                    availableTimes: selectedMedico.availableTimes,
-                  }
+                  nome: selectedMedico.nome,
+                  especialidadeId: selectedMedico.especialidadeId,
+                  convenioId: selectedMedico.convenios[0]?.id || "",
+                  availableTimes: selectedMedico.availableTimes,
+                }
                 : undefined
             }
             medicoId={selectedMedico?.id}
@@ -201,7 +203,7 @@ export function MedicosList({ medicos, especialidades, convenios }: MedicosListP
             <DialogDescription>Selecione a data e os horários disponíveis.</DialogDescription>
           </DialogHeader>
           <section className="py-4 space-y-4">
-            <DateTimePicker value={selectedDate} onChange={setSelectedDate} />
+
             <div className="grid grid-cols-5 gap-2 max-h-[400px] overflow-y-auto">
               {allHours.map((h) => (
                 <Button
@@ -217,6 +219,7 @@ export function MedicosList({ medicos, especialidades, convenios }: MedicosListP
                 </Button>
               ))}
             </div>
+            <DateTimePicker value={selectedDate} onChange={setSelectedDate} />
           </section>
           <DialogFooter>
             <Button onClick={handleSaveAvailability} className="w-full">
