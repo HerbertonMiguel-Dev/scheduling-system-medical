@@ -1,119 +1,79 @@
-//src/app/(panel)/servicos/_components/servicos-list.tsx
+//src/app/(panel)/dashboard/servicos/_components/servicos-list.tsx
 
 "use client"
-
-import { useState } from "react"
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Pencil, Plus, X } from "lucide-react"
-import type { Servico } from "@prisma/client"
-
-import { toast } from "sonner"
+import { useState } from 'react'
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Plus, Pencil, X } from 'lucide-react'
+import { DialogServico } from './dialog-servicos'
+import { Servico } from '@prisma/client'
+import { deleteServico } from '../_actions/delete-servico'
+import { toast } from 'sonner'
 
 interface ServicosListProps {
-  servicos: Servico[];
+  services: Servico[]
 }
 
-export function ServicosList({ servicos }: ServicosListProps) {
+export function ServicosList({ services }: ServicosListProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [editingServico, setEditingServico] = useState<null | Servico>(null)
+  const [editingService, setEditingService] = useState<null | Servico>(null)
 
-  function handleEdit(servico: Servico) {
-    setEditingServico(servico)
+  async function handleDeleteService(serviceId: string) {
+    const response = await deleteServico({ servicoId: serviceId })
+    if (response.error) return toast.error(response.error)
+    toast.success(response.data)
+  }
+
+  function handleEditService(service: Servico) {
+    setEditingService(service)
     setIsDialogOpen(true)
   }
 
-  function handleDelete(servicoId: string) {
-    // Simulação (mock)
-    toast.success(`Serviço ${servicoId} removido com sucesso!`)
-  }
-
   return (
-    <Dialog
-      open={isDialogOpen}
-      onOpenChange={(open) => {
-        setIsDialogOpen(open)
-        if (!open) setEditingServico(null)
-      }}
-    >
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-xl font-bold">Serviços</CardTitle>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="w-4 h-4" />
-            </Button>
-          </DialogTrigger>
-        </CardHeader>
+    <Dialog open={isDialogOpen} onOpenChange={(open) => {
+      setIsDialogOpen(open)
+      if (!open) setEditingService(null)
+    }}>
+      <section className="mx-auto">
+        <Card>
+          <CardHeader className='flex items-center justify-between'>
+            <CardTitle className='text-xl font-bold'>Serviços</CardTitle>
+            <DialogTrigger asChild>
+              <Button><Plus className="w-4 h-4" /></Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogServico
+                closeModal={() => { setIsDialogOpen(false); setEditingService(null) }}
+                servicoId={editingService?.id}
+                initialValues={editingService ? {
+                  nome: editingService.nome || "",
+                  hours: Math.floor(editingService.duracao / 60).toString(),
+                  minutes: (editingService.duracao % 60).toString()
+                } : undefined}
+              />
+            </DialogContent>
+          </CardHeader>
 
-        <CardContent>
-          {servicos.length === 0 ? (
-            <p className="text-gray-500">Nenhum serviço cadastrado.</p>
-          ) : (
-            <section className="space-y-3">
-              {servicos.map(servico => (
-                <article
-                  key={servico.id}
-                  className="flex items-center justify-between"
-                >
-                  <div className="flex flex-col">
-                    <span className="font-medium">{servico.nome}</span>
-                    <span className="text-gray-500 text-sm">
-                      Duração: {servico.duracao} min
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleEdit(servico)}
-                    >
+          <CardContent>
+            <section className="space-y-4 mt-5">
+              {services.map(service => (
+                <article key={service.id} className='flex items-center justify-between'>
+                  <span>{service.nome} - {Math.floor(service.duracao / 60)}h {service.duracao % 60}m</span>
+                  <div>
+                    <Button variant="ghost" size="icon" onClick={() => handleEditService(service)}>
                       <Pencil className="w-4 h-4" />
                     </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleDelete(servico.id)}
-                    >
+                    <Button variant="ghost" size="icon" onClick={() => handleDeleteService(service.id)}>
                       <X className="w-4 h-4" />
                     </Button>
                   </div>
                 </article>
               ))}
             </section>
-          )}
-        </CardContent>
-
-        <CardFooter>
-          <p className="text-sm text-gray-500">
-            Total de serviços: {servicos.length}
-          </p>
-        </CardFooter>
-      </Card>
-
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>
-            {editingServico ? "Editar Serviço" : "Cadastrar Serviço"}
-          </DialogTitle>
-        </DialogHeader>
-        <p className="text-sm text-gray-500">
-          (Aqui entraria o formulário — mockado para o teste)
-        </p>
-      </DialogContent>
+          </CardContent>
+        </Card>
+      </section>
     </Dialog>
   )
 }
