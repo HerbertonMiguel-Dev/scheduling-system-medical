@@ -1,36 +1,135 @@
-# 🏥 Agendamento Médico
+# 🩺 Scheduling System Medical
 
-Este guia detalha o processo de **configuração e inicialização completa** do ambiente de banco de dados, utilizando **Prisma ORM** e **PostgreSQL com Docker**.
+## 🧠 Sistema de Agendamento Médico Completo
+
+Este projeto é um **sistema full-stack** para gerenciamento de **agendamentos médicos**, desenvolvido com **Next.js (App Router)**, **TypeScript** e **Prisma**, garantindo alta performance, tipagem forte e integração eficiente com banco de dados.
 
 ---
 
-## 🚀 Guia de Inicialização Rápida (Passo a Passo Único)
+## 🏷️ Status do Projeto
 
-Siga esta sequência de comandos e ações para colocar o ambiente de desenvolvimento em funcionamento.
+> ✅ **Concluído — versão funcional e estável**
 
-### 1. Pré-requisitos
+---
 
-Certifique-se de que o **Docker** e o **Node.js/npm** estão instalados e em execução.
+## 🎯 Funcionalidades Principais
 
-### 2. Inicialização e Migração
+O sistema é dividido em **duas grandes áreas**:
 
-Execute os comandos a seguir em sequência. **Após o `npx prisma init`, edite o arquivo `.env` antes de prosseguir com `docker compose up -d` e `npx dotenv ...`**.
+1. **Área Pública (Paciente)** — para agendamentos online  
+2. **Painel Administrativo/Clínico** — para gestão interna da clínica
+
+---
+
+### 🚀 Área Pública (Agendamento Online)
+
+- 🔎 **Busca por filtros:** Filtra **médicos, especialidades e convênios**
+- ⏰ **Consulta de horários:** API calcula horários livres com base nos agendamentos existentes e duração dos serviços
+- ✅ **Formulário validado com Zod:** Garantia de integridade e consistência nos dados enviados
+
+---
+
+### 📊 Painel de Controle (Dashboard)
+
+- 📅 **Gestão de agendamentos:** Listagem e busca por data
+- 🔍 **Detalhamento completo:** Exibe informações de paciente, serviço, médico e convênio
+- ⚡ **Renderização otimizada:** Uso de `React.Suspense` para carregamento inteligente
+
+---
+
+## 💻 Tecnologias Utilizadas
+
+| Categoria | Tecnologia | Descrição |
+|------------|-------------|-----------|
+| **Framework** | [Next.js 14+](https://nextjs.org/) | Framework React full-stack (App Router, Server Actions) |
+| **Linguagem** | [TypeScript](https://www.typescriptlang.org/) | Tipagem estática e robustez |
+| **Banco de Dados** | [Prisma ORM](https://www.prisma.io/) | ORM moderno para PostgreSQL |
+| **Estilização** | [Tailwind CSS](https://tailwindcss.com/) | Estilização rápida e responsiva |
+| **Gerenciamento de Estado** | [TanStack Query](https://tanstack.com/query) | Cache e controle de requisições assíncronas |
+| **UI/UX** | [shadcn/ui](https://ui.shadcn.com/) | Componentes acessíveis e reutilizáveis |
+
+---
+
+## ⚙️ Instalação Local
+
+### 🧩 Pré-requisitos
+
+- Node.js **v18+**
+- npm ou yarn
+- Banco de dados **PostgreSQL**
+
+---
+
+### 🪜 Passo 1: Clonar o Repositório
 
 ```bash
-# Instala o Prisma CLI, dotenv-cli e o @prisma/client
-npm install prisma dotenv-cli --save-dev
-npm install @prisma/client
+git clone https://github.com/HerbertonMiguel-Dev/scheduling-system-medical.git
+cd scheduling-system-medical
 
-# Cria o schema.prisma e o arquivo .env
-npx prisma init
+npm install
 
-# --- AQUI VOCÊ DEVE EDITAR O ARQUIVO .env ---
-# No seu .env, adicione a URL de conexão do Docker (substitua USUARIO/SENHA/DB):
-# DATABASE_URL="postgresql://USUARIO:SENHA@localhost:5432/NOME_DO_BANCO?schema=public"
 
-# Inicia o servidor PostgreSQL em segundo plano (requer que o Docker esteja ativo)
-docker compose up -d
+# .env
+DATABASE_URL="postgresql://user:password@localhost:5432/database_name?schema=public"
 
-# Roda a migração, cria as tabelas e gera o Prisma Client
-# O dotenv-cli garante que a DATABASE_URL seja carregada.
-npx dotenv -e .env -- npx prisma migrate dev
+
+# Aplica o schema no banco
+npx prisma db push
+
+# Gera o cliente Prisma
+npx prisma generate
+
+
+npm run dev
+
+O projeto estará disponível em:
+👉 http://localhost:3000
+
+🐳 Configuração com Docker (recomendada)
+Pré-requisito
+
+Certifique-se de ter o Docker Desktop instalado e rodando.
+
+Passo 1: Build e Inicialização
+# Faz o build e inicia os containers em background
+docker-compose up --build -d
+
+
+O docker-compose.yml injeta automaticamente a variável DATABASE_URL apontando para o serviço PostgreSQL interno.
+
+🧱 Passo 2: Aplicar o Schema do Prisma
+
+Após o contêiner subir:
+
+docker-compose exec app npx prisma db push
+
+Passo 3 (Opcional): Inserir Dados Iniciais (Seed)
+docker-compose exec app npx prisma db seed
+
+
+O sistema estará disponível em:
+👉 http://localhost:3000
+
+├── prisma/
+│   └── schema.prisma         # Definição dos modelos de banco
+├── src/
+│   ├── api/                  # Rotas de API (lógica de agendamento)
+│   │   ├── agendamento/
+│   │   └── clinica/
+│   ├── app/
+│   │   ├── (panel)/          # Painel Administrativo
+│   │   └── (public)/         # Área Pública (agendamentos)
+│   │       ├── _data-access/ # Server Actions
+│   │       └── clinica/
+│   ├── components/
+│   │   └── ui/               # Componentes shadcn/ui
+│   ├── lib/
+│   │   └── prisma.ts         # Instância Singleton do Prisma
+│   ├── providers/            # Providers globais
+│   └── utils/                # Funções auxiliares
+└── package.json
+
+
+✨ Autor
+
+Desenvolvido com por Herberton Miguel
