@@ -12,6 +12,36 @@ Este projeto é um **sistema full-stack** para gerenciamento de **agendamentos m
 
 ---
 
+🏠 Página Inicial
+![Página Inicial](./public/public.png)
+
+### 📅 lista de Agendamentos
+![Agendamento](./public/dashboard-1.png)
+
+### Horarios de atendimento
+![Agendamento](./public/2.png)
+
+### dashboard de convenios 
+![Agendamento](./public/3.png)
+
+### dashboard de Especialidades 
+![Agendamento](./public/4.png)
+
+### 🧑‍⚕️ Dashboard Médico
+![Dashboard](./public/5.png)
+
+###  Dashboard Serviços
+![Agendamento](./public/6.png)
+
+###  Area de agendamento do paciente 
+![Agendamento](./public/7.png)
+
+###  Area de agendamento do paciente realizando agendamento 
+![Agendamento](./public/8.png)
+
+###  Listagem de atendimento com paciente  
+![Agendamento](./public/9.png)
+
 ## 🎯 Funcionalidades Principais
 
 O sistema é dividido em **duas grandes áreas**:
